@@ -1,0 +1,522 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rebellions Game - 1067-1070</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-amber-900 via-stone-800 to-stone-900 text-amber-50">
+    <div id="root"></div>
+
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+    <script type="text/babel">
+        const { useState } = React;
+
+
+        const Crown = () => (
+            <svg className="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L15 9L22 9L16 14L18 21L12 17L6 21L8 14L2 9L9 9L12 2Z"/>
+            </svg>
+        );
+
+
+        const Swords = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+            </svg>
+        );
+
+
+        const Castle = ({ className }) => (
+            <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 21h2V11H3v10zm4 0h2V11H7v10zm4 0h2V11h-2v10zm4 0h2V11h-2v10zm4 0h2V11h-2v10zM1 9l11-7 11 7v2H1V9z"/>
+            </svg>
+        );
+
+
+        const Skull = ({ className }) => (
+            <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-6h4v2h-4v-2zm0-4h4v2h-4v-2z"/>
+            </svg>
+        );
+
+
+        const ChevronRight = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
+            </svg>
+        );
+
+
+        const Flag = ({ className }) => (
+            <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.4 6L14 4H5v17h2v-7h5.6l.4 2h7V6z"/>
+            </svg>
+        );
+
+
+        const Shield = ({ className }) => (
+            <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/>
+            </svg>
+        );
+
+
+        const Flame = ({ className }) => (
+            <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+                <path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+            </svg>
+        );
+
+
+        const Users = ({ className }) => (
+            <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+            </svg>
+        );
+
+
+        const Church = ({ className }) => (
+            <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18 12.22V9l-5-2.5V5h2V3h-2V1h-2v2H9v2h2v1.5L6 9v3.22L2 14v8h8v-3c0-1.1.9-2 2-2s2 .9 2 2v3h8v-8l-4-1.78zM12 13.5c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+            </svg>
+        );
+
+
+        function RebelionsGame() {
+            const [currentSlide, setCurrentSlide] = useState('intro');
+            const [stats, setStats] = useState({
+                rebellionsCrushed: 0,
+                herewardsCaptured: 0,
+                saxonsHarried: 0,
+                morcarsCaptured: 0,
+                edwinsKilled: 0,
+                danishInvasions: 0,
+                cuminsLost: 0,
+                castlesBuilt: 0,
+                yorkBurned: 0
+            });
+
+
+            const BASE_URL = 'https://raw.githubusercontent.com/forda-a11y/CYOA/main/assets/images/illustrations/';
+
+
+            const slides = {
+                intro: {
+                    title: "Anglo Saxon and Norman England - 1060-1080",
+                    subtitle: "The Rebellions Game",
+                    text: "Discontent grew with William's reign among key groups of Anglo-Saxons",
+                    instruction: "Read the information on each slide carefully. Click the buttons to progress through the game. Be careful - a wrong decision will send you back to the start!",
+                    buttons: [{ text: "BEGIN", next: "start" }],
+                    backgroundImage: BASE_URL + "Tapestry%20William%20Throne.png"
+                },
+                start: {
+                    title: "William I - 1067",
+                    text: "The year is 1067. You are William I of Normandy and the great conquering King of England. You have promised to rule England fairly in the traditions of the best Anglo-Saxon kings...",
+                    buttons: [{ text: "NEXT", next: "rebellion1" }],
+                    showCrown: true,
+                    backgroundImage: BASE_URL + "Tapestry%20William%20Throne.png"
+                },
+                rebellion1: {
+                    title: "News from the North",
+                    text: "News reaches you of a rebellion in the North. Edwin and Morcar who you have just released as your 'guests' have begun a revolt against you!",
+                    question: "Do you...",
+                    buttons: [
+                        { text: "Ignore the Threat - How serious can it be?", next: "fail_ignore" },
+                        { text: "Raise an army to march north - No challenge to your power can be tolerated", next: "march_north1" }
+                    ],
+                    icon: <Flag className="w-16 h-16 text-red-400 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Game%20Over%20Castle%20Burning.png"
+                },
+                fail_ignore: {
+                    title: "Try Again?",
+                    text: "Without being stopped the rebellions to your rule grow. Anglo-Saxon Earls and Thegns join the cause and rally behind Edgar Aethling...",
+                    failure: true,
+                    buttons: [{ text: "Try Again", next: "rebellion1" }],
+                    backgroundImage: BASE_URL + "Game%20Over%20Army%20Defeated.png"
+                },
+                march_north1: {
+                    title: "March to Warwick and Nottingham",
+                    text: "Your large army marches north attacking rebels as you go. You build several castles to show your authority. When you reach Warwick and Nottingham you build large castles there. Edwin and Morcar quickly surrender.",
+                    question: "Do you...",
+                    buttons: [
+                        { text: "Slaughter them - There can be no mercy", next: "fail_slaughter" },
+                        { text: "Make them submit - Make a public display of their loyalty", next: "prisoners" }
+                    ],
+                    onEnter: () => ({ castlesBuilt: 2, rebellionsCrushed: 1 }),
+                    icon: <Castle className="w-16 h-16 text-amber-600 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Army%20Marching.png"
+                },
+                fail_slaughter: {
+                    title: "Try Again?",
+                    text: "Murdering Edwin and Morcar after such a small rebellion makes them martyrs to the Anglo-Saxons. You have broken your promise to be a fair and merciful king. The rebellions grow and your reign is over...",
+                    failure: true,
+                    buttons: [{ text: "Try Again", next: "march_north1" }],
+                    backgroundImage: BASE_URL + "Game%20Over%20Army%20Defeated.png"
+                },
+                prisoners: {
+                    title: "Prisoners Secured",
+                    text: "Edwin and Morcar become your prisoners and the revolt fades. You keep them close where they can be controlled but Edgar Aethling escapes to Scotland.",
+                    buttons: [{ text: "NEXT", next: "cumin" }],
+                    icon: <Shield className="w-16 h-16 text-gray-400 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Edgar%20Atheling.png"
+                },
+                cumin: {
+                    title: "Murder in Durham",
+                    text: "Your newly appointed Earl of Northumbria, Robert Cumin has been murdered in the streets of Durham. He was warned his treatment of the Anglo-Saxons has been too brutal.",
+                    question: "Do you...",
+                    buttons: [
+                        { text: "March North - Best to deal with this threat immediately", next: "york1" },
+                        { text: "Wait... - Robert brought this on himself", next: "fail_wait" }
+                    ],
+                    onEnter: () => ({ cuminsLost: 1 }),
+                    icon: <Skull className="w-16 h-16 text-red-500 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Town%20Burning.png"
+                },
+                fail_wait: {
+                    title: "Try Again?",
+                    text: "Edwin and Morcar escape your control and quickly join the Northern Rebels. Without swift action the people of the Danelaw see you as weak... Your reign is over.",
+                    failure: true,
+                    buttons: [{ text: "Try Again", next: "cumin" }],
+                    backgroundImage: BASE_URL + "Game%20Over%20Army%20Defeated.png"
+                },
+                york1: {
+                    title: "York Secured",
+                    text: "You march north again this time laying waste to the city of York and building a new castle. William FitzOsbern will defend this land for you. The rebels retreat but the important ceremony of Easter approaches.",
+                    question: "",
+                    buttons: [
+                        { text: "Head south to Winchester for the Easter celebrations", next: "easter" },
+                        { text: "Continue to fight the rebellion - God can wait!", next: "fail_easter" }
+                    ],
+                    onEnter: () => ({ castlesBuilt: 1, yorkBurned: 1 }),
+                    icon: <Flame className="w-16 h-16 text-orange-500 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Town%20Burning.png"
+                },
+                fail_easter: {
+                    title: "Try Again...",
+                    text: "Your supporters and soldiers are shocked you are defying God, after all, your victory at Hastings came with his blessing!",
+                    failure: true,
+                    buttons: [{ text: "Try Again", next: "york1" }],
+                    backgroundImage: BASE_URL + "Heaven%20Entry%20Denied.png"
+                },
+                easter: {
+                    title: "Easter at Winchester",
+                    text: "You argue God has supported your claim by giving you victory at Hastings so it is vital that you are seen to be observing the proper religious ceremonies. You have promised to be a wise and fair king - like Edward the Confessor.",
+                    buttons: [{ text: "NEXT", next: "danes1" }],
+                    icon: <Church className="w-16 h-16 text-amber-300 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Winchester%20Cathedral%20Easter.png"
+                },
+                danes1: {
+                    title: "Danish Raiders",
+                    text: "You receive word that a Danish fleet is raiding along the east coast of England and is ready to join the Northern rebels. 3000 Normans in York have also been slaughtered.",
+                    question: "Should you...",
+                    buttons: [
+                        { text: "Head north with an Army to challenge the Danes", next: "fail_danes" },
+                        { text: "Find another way... - I can't fight both enemies at once", next: "bribe_danes" }
+                    ],
+                    onEnter: () => ({ danishInvasions: 1, yorkBurned: 1 }),
+                    icon: <Swords className="w-6 h-6 text-blue-400 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Viking%20Raid.png"
+                },
+                fail_danes: {
+                    title: "Try Again?",
+                    text: "The Danes, secure in their defensive position have a clear advantage. Your army are slaughtered on the Battlefield and with no powerful navy are drowned at sea.",
+                    failure: true,
+                    buttons: [{ text: "Try Again", next: "danes1" }],
+                    backgroundImage: BASE_URL + "Game%20Over%20Soldiers%20Drowning.png"
+                },
+                bribe_danes: {
+                    title: "Danish Gold",
+                    text: "You use the wealth of England to bribe the Danes. You pay them a vast sum and they disappear. This leaves you free to deal with the English Rebels.",
+                    buttons: [{ text: "NEXT", next: "guerilla" }],
+                    showCrown: true,
+                    backgroundImage: BASE_URL + "Treasure%20Gold.png"
+                },
+                guerilla: {
+                    title: "Guerilla Warfare",
+                    text: "With the Danes dealt with you now need to deal with the English rebels. Guerilla tactics are slowly wearing down your forces. Each time you arrive in an area they flee, but when you leave they return.",
+                    question: "Do you...",
+                    buttons: [
+                        { text: "Continue to march your soldiers to defeat key rebellions", next: "fail_march" },
+                        { text: "Focus on the North and destroy all resistance", next: "harrying" }
+                    ],
+                    icon: <Users className="w-16 h-16 text-green-600 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Guerilla%20Fighters.png"
+                },
+                fail_march: {
+                    title: "Try Again?",
+                    text: "Your soldiers are tired from marching across the country, especially in Winter. They lose faith in your leadership and turn away from your cause.",
+                    failure: true,
+                    buttons: [{ text: "Try Again", next: "guerilla" }],
+                    backgroundImage: BASE_URL + "Game%20Over%20Soldiers%20Winter.png"
+                },
+                harrying: {
+                    title: "The Harrying of the North",
+                    text: "You undertake the Harrying of the North. By destroying villages, crops and people you destroy all ability for resistance and rebellion in the North of England. You also destroy the support in the North for future resistance from Edgar or the Danes.",
+                    buttons: [{ text: "NEXT", next: "edgar" }],
+                    onEnter: () => ({ saxonsHarried: 100000, rebellionsCrushed: 1 }),
+                    icon: <Flame className="w-16 h-16 text-red-600 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Harrying%20Of%20The%20North.png"
+                },
+                edgar: {
+                    title: "Edgar Escapes",
+                    text: "You have not been able to catch Edgar the Aethling. He has retreated again to his safe base of operations in Scotland.",
+                    question: "Do you...",
+                    buttons: [
+                        { text: "Pursue him... - This threat cannot be ignored", next: "fail_scotland" },
+                        { text: "Focus on strengthening your own claim", next: "legitimacy" }
+                    ],
+                    icon: <Flag className="w-16 h-16 text-purple-400 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Edgar%20Atheling.png"
+                },
+                fail_scotland: {
+                    title: "Try Again?",
+                    text: "By pursuing Edgar whose sister is now wed to Malcolm III, you provoke war with Scotland. The rebellions spiral out of control. Your reign is over.",
+                    failure: true,
+                    buttons: [{ text: "Try Again", next: "edgar" }],
+                    backgroundImage: BASE_URL + "Game%20Over%20Viking%20Invasion.png"
+                },
+                legitimacy: {
+                    title: "Royal Ceremonies",
+                    text: "You continue to focus on presenting yourself as a legitimate king - attending royal and religious ceremonies and making public appearances.",
+                    buttons: [{ text: "NEXT", next: "ely1" }],
+                    showCrown: true,
+                    backgroundImage: BASE_URL + "Bayeux%20Tapestry%20Harrying.png"
+                },
+                ely1: {
+                    title: "Rebellion in East Anglia - 1070",
+                    text: "You hear of a new outbreak of rebellion in East Anglia. The Danes have arrived back and are teaming up with local rebels. You arrive at East Anglia to find the Danes have left with stolen treasure but the traitor Morcar has joined local rebel hero Hereward the Wake. You need to find a way to cross the treacherous marshes to attack the Isle of Ely.",
+                    question: "Do you...",
+                    buttons: [
+                        { text: "Build a bridge to cross the marshes", next: "fail_bridge" },
+                        { text: "Bribe local monks to show you a safe route through the marshes", next: "ely_victory" }
+                    ],
+                    onEnter: () => ({ danishInvasions: 1 }),
+                    icon: <Castle className="w-16 h-16 text-green-700 mx-auto mb-4" />,
+                    backgroundImage: BASE_URL + "Ely%20Marshes.png"
+                },
+                fail_bridge: {
+                    title: "Try Again?",
+                    text: "The bridge collapses under the weight of the advancing Norman army. Many drown in the marshes.",
+                    failure: true,
+                    buttons: [{ text: "Try Again", next: "ely1" }],
+                    backgroundImage: BASE_URL + "Game%20Over%20Soldiers%20Drowning.png"
+                },
+                ely_victory: {
+                    title: "Victory at Ely",
+                    text: "The corrupt monks show you a path through the marshes. You lead your forces through and capture the Isle of Ely.",
+                    buttons: [{ text: "NEXT", next: "final" }],
+                    onEnter: () => ({ morcarsCaptured: 1, rebellionsCrushed: 1 }),
+                    showCrown: true,
+                    backgroundImage: BASE_URL + "Ely%20Marshes.png"
+                },
+                final: {
+                    title: "Victory - 1070",
+                    text: "You have finally defeated the last pocket of Anglo-Saxon rebellion. From now on you are free to concentrate on ruling England. Edwin is dead and Morcar is your prisoner. There will be no more threats of rebellion... from Anglo-Saxons.",
+                    final: true,
+                    onEnter: () => ({ edwinsKilled: 1, castlesBuilt: 'Lots' }),
+                    backgroundImage: BASE_URL + "Tapestry%20William%20Throne.png"
+                }
+            };
+
+
+            const handleChoice = (next) => {
+                const slide = slides[currentSlide];
+                if (slide.onEnter) {
+                    const updates = slide.onEnter();
+                    setStats(prev => {
+                        const newStats = { ...prev };
+                        Object.keys(updates).forEach(key => {
+                            if (typeof updates[key] === 'number') {
+                                newStats[key] += updates[key];
+                            } else {
+                                newStats[key] = updates[key];
+                            }
+                        });
+                        return newStats;
+                    });
+                }
+                setCurrentSlide(next);
+            };
+
+
+            const current = slides[currentSlide];
+
+
+            return (
+                <div className="min-h-screen p-4 md:p-8">
+                    <div className="max-w-5xl mx-auto">
+                        {/* Header */}
+                        <div className="text-center mb-6 md:mb-8 border-b-4 border-amber-600 pb-4 md:pb-6">
+                            <div className="flex items-center justify-center gap-2 md:gap-3 mb-3">
+                                <Crown />
+                                <h1 className="text-2xl md:text-4xl font-bold text-amber-200">
+                                    {current.title || "The Rebellions Game"}
+                                </h1>
+                                <Crown />
+                            </div>
+                            {current.subtitle && (
+                                <p className="text-lg md:text-xl text-amber-300 italic">{current.subtitle}</p>
+                            )}
+                        </div>
+
+
+                        {/* Main Content */}
+                        <div className="bg-stone-800/90 rounded-lg p-4 md:p-8 shadow-2xl border-4 border-amber-700 mb-6 relative overflow-hidden min-h-[500px]">
+                            {/* Background Image */}
+                            {current.backgroundImage && (
+                                <img 
+                                    src={current.backgroundImage} 
+                                    alt="" 
+                                    className="absolute inset-0 w-full h-full object-cover rounded-lg opacity-40"
+                                    crossOrigin="anonymous"
+                                />
+                            )}
+                            
+                            {/* Dark overlay */}
+                            <div className="absolute inset-0 bg-stone-900/75 rounded-lg"></div>
+                            
+                            {/* Content */}
+                            <div className="relative z-10">
+                                {current.icon && <div className="flex justify-center">{current.icon}</div>}
+                                {current.showCrown && <div className="flex justify-center"><Crown /></div>}
+
+
+                                {currentSlide === 'intro' && (
+                                    <div className="space-y-6">
+                                        <p className="text-base md:text-lg text-amber-100 leading-relaxed">{current.text}</p>
+                                        <div className="bg-stone-700/90 p-4 md:p-6 rounded border-2 border-amber-600">
+                                            <h3 className="text-lg md:text-xl font-bold text-amber-300 mb-3">Instructions:</h3>
+                                            <p className="text-sm md:text-base text-amber-100 leading-relaxed">{current.instruction}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+
+                                {currentSlide !== 'intro' && !current.final && (
+                                    <div className="space-y-4 md:space-y-6">
+                                        {current.failure && (
+                                            <div className="flex items-center justify-center gap-3 mb-4">
+                                                <Skull className="w-10 h-10 md:w-12 md:h-12 text-red-500" />
+                                                <h2 className="text-2xl md:text-3xl font-bold text-red-400">FAILED</h2>
+                                                <Skull className="w-10 h-10 md:w-12 md:h-12 text-red-500" />
+                                            </div>
+                                        )}
+                                        
+                                        <p className="text-base md:text-lg text-amber-100 leading-relaxed whitespace-pre-line">
+                                            {current.text}
+                                        </p>
+                                        
+                                        {current.question && (
+                                            <p className="text-lg md:text-xl font-bold text-amber-300 mt-4">{current.question}</p>
+                                        )}
+                                    </div>
+                                )}
+
+
+                                {current.final && (
+                                    <div className="space-y-4 md:space-y-6">
+                                        <div className="flex items-center justify-center gap-3 mb-4">
+                                            <Castle className="w-10 h-10 md:w-12 md:h-12 text-amber-400" />
+                                            <h2 className="text-2xl md:text-3xl font-bold text-green-400">VICTORY!</h2>
+                                            <Castle className="w-10 h-10 md:w-12 md:h-12 text-amber-400" />
+                                        </div>
+                                        
+                                        <Crown />
+                                        
+                                        <p className="text-base md:text-lg text-amber-100 leading-relaxed">{current.text}</p>
+                                        
+                                        <div className="bg-stone-700/95 p-4 md:p-6 rounded border-2 border-amber-600 mt-6">
+                                            <h3 className="text-xl md:text-2xl font-bold text-amber-300 mb-4 text-center">RESULTS</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 text-sm md:text-base text-amber-100">
+                                                <div>Rebellions crushed: <span className="text-amber-300 font-bold">{stats.rebellionsCrushed}</span></div>
+                                                <div>Herewards captured: <span className="text-amber-300 font-bold">{stats.herewardsCaptured}</span></div>
+                                                <div>Anglo-Saxons harried: <span className="text-amber-300 font-bold">{stats.saxonsHarried.toLocaleString()}</span></div>
+                                                <div>Morcars captured: <span className="text-amber-300 font-bold">{stats.morcarsCaptured}</span></div>
+                                                <div>Edwins killed: <span className="text-amber-300 font-bold">{stats.edwinsKilled}</span></div>
+                                                <div>Danish invasions: <span className="text-amber-300 font-bold">{stats.danishInvasions}</span></div>
+                                                <div>Cumins lost: <span className="text-amber-300 font-bold">{stats.cuminsLost}</span></div>
+                                                <div>Total castles built: <span className="text-amber-300 font-bold">{stats.castlesBuilt}</span></div>
+                                                <div className="col-span-1 md:col-span-2">Times York burned: <span className="text-amber-300 font-bold">{stats.yorkBurned}</span></div>
+                                            </div>
+                                            <div className="mt-6 text-center">
+                                                <div className="text-xl md:text-2xl font-bold text-amber-400">King-o-meter: 👑👑👑👑👑</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <button
+                                            onClick={() => {
+                                                setCurrentSlide('intro');
+                                                setStats({
+                                                    rebellionsCrushed: 0,
+                                                    herewardsCaptured: 0,
+                                                    saxonsHarried: 0,
+                                                    morcarsCaptured: 0,
+                                                    edwinsKilled: 0,
+                                                    danishInvasions: 0,
+                                                    cuminsLost: 0,
+                                                    castlesBuilt: 0,
+                                                    yorkBurned: 0
+                                                });
+                                            }}
+                                            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-base md:text-lg"
+                                        >
+                                            Play Again
+                                        </button>
+                                    </div>
+                                )}
+
+
+                                {/* Buttons */}
+                                {!current.final && (
+                                    <div className="mt-6 md:mt-8 space-y-3 md:space-y-4">
+                                        {current.buttons.map((button, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => handleChoice(button.next)}
+                                                className={`w-full ${
+                                                    current.failure 
+                                                        ? 'bg-red-700 hover:bg-red-800' 
+                                                        : 'bg-amber-700 hover:bg-amber-800'
+                                                } text-white font-bold py-3 md:py-4 px-4 md:px-6 rounded-lg transition-colors text-base md:text-lg flex items-center justify-between group`}
+                                            >
+                                                <span className="flex-1 text-left">{button.text}</span>
+                                                <ChevronRight className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+
+                        {/* Progress indicator */}
+                        {!current.final && currentSlide !== 'intro' && (
+                            <div className="text-center text-amber-400 text-xs md:text-sm flex items-center justify-center gap-2">
+                                <Swords className="w-4 h-4" />
+                                <span>Year: 1067-1070 | Kingdom at stake</span>
+                                <Swords className="w-4 h-4" />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+
+        ReactDOM.render(<RebelionsGame />, document.getElementById('root'));
+    </script>
+</body>
+</html>
